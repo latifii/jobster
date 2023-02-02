@@ -1,7 +1,9 @@
+import Landing from './pages/Landing'
+
 function App() {
   return (
     <div className='App'>
-      <p>test</p>
+      <Landing />
     </div>
   )
 }
