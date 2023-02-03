@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import {
   addUserToLocalStorage,
   getUserToLocalStorage,
+  removeUserToLocalStorage,
 } from '../../utils/localStorage'
 
 export const registerUser = createAsyncThunk(
@@ -33,11 +34,22 @@ export const loginUser = createAsyncThunk(
 const initialState = {
   isLoading: false,
   user: getUserToLocalStorage(),
+  isSidebarOpen: true,
 }
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
+  reducers: {
+    toggleSidebar: (state) => {
+      state.isSidebarOpen = !state.isSidebarOpen
+    },
+    logoutUser: (state) => {
+      state.user = null
+      // state.isSidebarOpen = false
+      removeUserToLocalStorage()
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -71,4 +83,5 @@ const userSlice = createSlice({
   },
 })
 
+export const { toggleSidebar, logoutUser } = userSlice.actions
 export default userSlice.reducer
