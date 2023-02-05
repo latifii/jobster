@@ -1,36 +1,32 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import customFetch from '../../utils/axios'
 import { toast } from 'react-toastify'
 import {
   addUserToLocalStorage,
   getUserToLocalStorage,
   removeUserToLocalStorage,
 } from '../../utils/localStorage'
+import { registerUserThunk, loginUserThunk, updateUserThunk } from './userThunk'
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (user, thunkAPI) => {
-    try {
-      const resp = await customFetch.post('/auth/register', user)
-      return resp.data
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg)
-    }
+    return registerUserThunk('/auth/register', user, thunkAPI)
   }
 )
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (user, thunkAPI) => {
-    try {
-      const resp = await customFetch.post('/auth/login', user)
-      return resp.data
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg)
-    }
+    return loginUserThunk('/auth/login', user, thunkAPI)
   }
 )
 
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user, thunkAPI) => {
+    return updateUserThunk('/auth/updateUser', user, thunkAPI)
+  }
+)
 const initialState = {
   isLoading: false,
   user: getUserToLocalStorage(),
@@ -46,8 +42,8 @@ const userSlice = createSlice({
     },
     logoutUser: (state) => {
       state.user = null
-      // state.isSidebarOpen = false
       removeUserToLocalStorage()
+      toast.success('Logging out...')
     },
   },
   extraReducers: (builder) => {
@@ -79,6 +75,19 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false
         toast.error(payload)
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        const { user } = payload
+        state.isLoading = false
+        state.user = user
+        addUserToLocalStorage(user)
+        toast.success(`updated user ${user.name}`)
+      })
+      .addCase(updateUser.rejected, (state) => {
+        state.isLoading = false
       })
   },
 })
