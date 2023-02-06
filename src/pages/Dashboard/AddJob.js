@@ -2,7 +2,12 @@ import { FormRow } from '../../components'
 import Wrapper from '../../assets/wrappers/DashboardFormPage'
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearJob, createJob, handleChange } from '../../features/job/jobSlice'
+import {
+  clearJob,
+  createJob,
+  editJob,
+  handleChange,
+} from '../../features/job/jobSlice'
 import FormRowSelect from '../../components/FormRowSelect'
 import { useEffect } from 'react'
 
@@ -16,6 +21,8 @@ const AddJob = () => {
     jobType,
     statusOptions,
     status,
+    isEditing,
+    editJobId,
   } = useSelector((store) => store.job)
 
   const { user } = useSelector((store) => store.user)
@@ -33,17 +40,34 @@ const AddJob = () => {
       toast.error('fill complete item')
       return
     }
+    if (isEditing) {
+      dispatch(
+        editJob({
+          jobId: editJobId,
+          job: {
+            position,
+            company,
+            jobLocation,
+            jobType,
+            status,
+          },
+        })
+      )
+      return
+    }
     dispatch(createJob({ position, company, jobLocation, jobType, status }))
   }
 
   useEffect(() => {
-    dispatch(handleChange({ name: 'jobLocation', value: user.location }))
+    if (!isEditing) {
+      dispatch(handleChange({ name: 'jobLocation', value: user.location }))
+    }
   }, [])
 
   return (
     <Wrapper>
       <form className='form'>
-        <h3>add job</h3>
+        <h3>{isEditing ? 'edit job' : 'add job'}</h3>
         <div className='form-center'>
           <FormRow
             type='text'
