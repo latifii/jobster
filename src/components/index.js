@@ -1,6 +1,7 @@
 import BigSidebar from './BigSidebar'
 import ChartsContainer from './ChartsContainer'
 import FormRow from './FormRow'
+import FormRowSelect from './FormRowSelect'
 import Job from './Job'
 import JobInfo from './JobInfo'
 import JobsContainer from './JobsContainer'
@@ -13,6 +14,7 @@ import StatItem from './StatItem'
 import StatsContainer from './StatsContainer'
 
 export {
+  FormRowSelect,
   Logo,
   FormRow,
   BigSidebar,
