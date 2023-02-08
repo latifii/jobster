@@ -75,6 +75,7 @@ const jobSlice = createSlice({
   initialState,
   reducers: {
     handleChange: (state, { payload: { name, value } }) => {
+      state.page = 1
       state[name] = value
     },
     clearJob: () => {

@@ -38,6 +38,7 @@ const PageBtnContainer = () => {
               type='button'
               className={item === page ? 'pageBtn active' : 'pageBtn'}
               key={item}
+              onClick={() => dispatch(changePage(item))}
             >
               {item}
             </button>

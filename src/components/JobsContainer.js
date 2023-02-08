@@ -7,12 +7,20 @@ import { Job, PageBtnContainer, Loading } from '.'
 
 const JobsContainer = () => {
   const dispatch = useDispatch()
-  const { jobs, isLoading, totalJobs, numOfPages } = useSelector(
-    (store) => store.allJob
-  )
+  const {
+    jobs,
+    isLoading,
+    totalJobs,
+    numOfPages,
+    search,
+    searchStatus,
+    searchType,
+    sort,
+    page,
+  } = useSelector((store) => store.allJob)
   useEffect(() => {
     dispatch(getAllJobs())
-  }, [])
+  }, [page, search, searchStatus, searchType, sort])
 
   if (isLoading) {
     return (
