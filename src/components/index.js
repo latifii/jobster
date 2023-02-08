@@ -8,6 +8,7 @@ import JobsContainer from './JobsContainer'
 import Loading from './Loading'
 import Logo from './Logo'
 import Navbar from './Navbar'
+import PageBtnContainer from './PageBtnContainer'
 import SearchContainer from './SearchContainer'
 import SmallSidebar from './SmallSidebar'
 import StatItem from './StatItem'
@@ -28,4 +29,5 @@ export {
   StatsContainer,
   ChartsContainer,
   StatItem,
+  PageBtnContainer,
 }
